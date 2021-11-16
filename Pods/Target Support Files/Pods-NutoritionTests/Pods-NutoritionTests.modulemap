@@ -1,0 +1,6 @@
+framework module Pods_NutoritionTests {
+  umbrella header "Pods-NutoritionTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
