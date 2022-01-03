@@ -4,9 +4,16 @@ class TopCategoryViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    public var categoryTitle: String? {
+        didSet { textLabel.text = categoryTitle }
+    }
+    
     private lazy var textLabel: UILabel = {
         let label = UILabel()
-        label.text = "テキスト"
+        label.layer.cornerRadius = frame.height / 2
+        label.backgroundColor = .systemBlue
+        label.textAlignment = .center
+        label.clipsToBounds = true
         return label
     }()
     
@@ -15,17 +22,8 @@ class TopCategoryViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.cornerRadius = frame.height / 2
-        
         addSubview(textLabel)
-        textLabel.anchor(top: topAnchor,
-                         left: leftAnchor,
-                         bottom: bottomAnchor,
-                         right: rightAnchor,
-                         paddingTop: 10,
-                         paddingLeft: 10,
-                         paddingBottom: 10,
-                         paddingRight: 10)
+        textLabel.fillSuperview()
     }
     
     required init?(coder: NSCoder) {

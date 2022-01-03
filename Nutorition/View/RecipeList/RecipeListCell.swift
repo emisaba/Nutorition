@@ -1,13 +1,18 @@
 import UIKit
+import SDWebImage
 
 class RecipeListCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    public var viewModel: RecipeListCellViewModel? {
+        didSet { configureViewModel() }
+    }
+    
     private let imageView = UIImageView.createImageView(image: #imageLiteral(resourceName: "fruit"), cornerRadius: 5)
     private let titleLabel = UILabel.createBoldLabel(text: "タイトル", size: 24)
     
-    private lazy var graphView = GraphView(frame: CGRect(x: 0, y: 80, width: frame.height - 80, height: frame.height - 80), isTop: false)
+    private lazy var graphView = GraphView(frame: CGRect(x: 0, y: 90, width: frame.height - 90, height: frame.height - 90), isTop: false)
     
     
     // MARK: - Lifecycle
@@ -32,5 +37,35 @@ class RecipeListCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Helper
+    
+    func configureViewModel() {
+        guard let viewModel = viewModel else { return }
+        
+        imageView.sd_setImage(with: viewModel.imageUrl, completed: nil)
+        titleLabel.text = viewModel.title
+        graphView.amountData = viewModel.amountData
+    }
+}
+
+struct RecipeListCellViewModel {
+    let recipe: Recipe
+    
+    var imageUrl: URL? {
+        return URL(string: recipe.mainImageUrl)
+    }
+    
+    var title: String {
+        return recipe.title
+    }
+    
+    var amountData: [String: Double] {
+        return recipe.foodSum
+    }
+
+    init(recipe: Recipe) {
+        self.recipe = recipe
     }
 }

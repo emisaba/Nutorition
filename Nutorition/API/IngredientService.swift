@@ -1,8 +1,13 @@
 import UIKit
 
+struct IngredientInfoToRecipe {
+    let ingredientID: String
+    let foodIds: [String]
+}
+
 struct IngredientService {
     
-    static func uploadIngredient(ingredientInfos: [IngredientInfo], completion: @escaping(String) -> Void) {
+    static func uploadIngredient(ingredientInfos: [IngredientInfo], completion: @escaping(IngredientInfoToRecipe) -> Void) {
         
         let ref = COLLECTION_INGREDIENTS.document()
         let ingredientID = ref.documentID
@@ -17,7 +22,7 @@ struct IngredientService {
         
         ingredientInfos.forEach { ingredientInfo in
             
-            FoodService.uploadFoodInfo(food: ingredientInfo.ingredient) { foodId in
+            FoodService.uploadFoodInfo(food: ingredientInfo) { foodId in
                 ImageUploader.uploadFoodImage(image: ingredientInfo.image) { imageUrl in
                     imageUrls.append(imageUrl)
                     names.append(ingredientInfo.name)
@@ -34,18 +39,62 @@ struct IngredientService {
                     
                     if ingredientInfosCount == 0 {
                         
-                        print("###data:\(data)")
-                        
                         ref.setData(data) { error in
                             if let error = error {
                                 print("failed to upload ingredient info: \(error.localizedDescription)")
                                 return
                             }
                             
-                            completion(ingredientID)
+                            let ingredientInfoToRecipe = IngredientInfoToRecipe(ingredientID: ingredientID, foodIds: foodIds)
+                            completion(ingredientInfoToRecipe)
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    static func fetchIngredient(completion: @escaping([IngredientDetaile]) -> Void) {
+        COLLECTION_INGREDIENTS.getDocuments { snapshot, _ in
+            guard let documents = snapshot?.documents else { return }
+            var foodIdCount = 0
+            var ingredientCount = 0
+            var ingredientDetailes: [IngredientDetaile] = []
+            
+            let ingredients = documents.map { Ingredient(data: $0.data()) }
+            
+            ingredients.forEach { ingredient in
+                ingredient.foodIds.forEach { foodId in
+                    COLLECTION_FOODS.document(foodId).getDocument { document, _ in
+                        
+                        guard let data = document?.data() else { return }
+                        let nutrition = Nutrition(data: data)
+                        
+                        let ingredientDetaileData: [String: Any] = ["ingredientID": ingredient.ingredientID,
+                                                                    "foodID": nutrition.foodID,
+                                                                    "imageUrl": nutrition.imageUrl,
+                                                                    "name": nutrition.foodName,
+                                                                    "amount": nutrition.amount,
+                                                                    "protein": nutrition.protein,
+                                                                    "calcium": nutrition.calcium,
+                                                                    "iron": nutrition.iron,
+                                                                    "vitaminA": nutrition.vitaminA,
+                                                                    "vitaminB": nutrition.vitaminB,
+                                                                    "vitaminC": nutrition.vitaminC,
+                                                                    "vitaminD": nutrition.vitaminD,
+                                                                    "vitaminE": nutrition.vitaminE]
+                        
+                        let ingredientDetaile = IngredientDetaile(data: ingredientDetaileData)
+                        ingredientDetailes.append(ingredientDetaile)
+                        
+                        foodIdCount += 1
+                        
+                        if ingredientCount == ingredients.count && foodIdCount == ingredient.foodIds.count {
+                            completion(ingredientDetailes)
+                        }
+                    }
+                }
+                ingredientCount += 1
             }
         }
     }

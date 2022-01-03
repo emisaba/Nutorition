@@ -13,10 +13,10 @@ class GraphView: UIView {
     private let idealCalciumAmount: CGFloat = 650
     private let idealIronAmount: CGFloat = 6.5
     private let idealVitaminaAmount: CGFloat = 650
-    private let idealVitamindAmount: CGFloat = 8.5
-    private let idealVitamineAmount: CGFloat = 5
     private let idealVitaminbAmount: CGFloat = 20
     private let idealVitamincAmount: CGFloat = 100
+    private let idealVitamindAmount: CGFloat = 8.5
+    private let idealVitamineAmount: CGFloat = 5
     
     var amountData: [String: Double] = [:] {
         didSet {
@@ -25,14 +25,14 @@ class GraphView: UIView {
         }
     }
     
-    private lazy var protainImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var proteinImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
     private lazy var calciumImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
     private lazy var ironImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
     private lazy var vitaminaImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
-    private lazy var vitamindImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
-    private lazy var vitamineImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
     private lazy var vitaminbImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
     private lazy var vitamincImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var vitamindImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var vitamineImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
     
     // MARK: - LifeCycle
     
@@ -127,8 +127,8 @@ class GraphView: UIView {
         let iconDiameter: CGFloat = 40
         let space: CGFloat = 15
         
-        addSubview(protainImageView)
-        protainImageView.frame = CGRect(x: viewCenterPoint.x - iconRadius,
+        addSubview(proteinImageView)
+        proteinImageView.frame = CGRect(x: viewCenterPoint.x - iconRadius,
                                         y: viewCenterPoint.y - radiusLength - space - iconDiameter,
                                         width: iconDiameter, height: iconDiameter)
         
@@ -147,39 +147,39 @@ class GraphView: UIView {
                                          y: viewCenterPoint.y + diagonalRadiusLength - (space - iconRadius),
                                          width: iconDiameter, height: iconDiameter)
             
-        addSubview(vitamindImageView)
-        vitamindImageView.frame = CGRect(x: viewCenterPoint.x - iconRadius,
+        addSubview(vitaminbImageView)
+        vitaminbImageView.frame = CGRect(x: viewCenterPoint.x - iconRadius,
                                          y: viewCenterPoint.y + radiusLength + space,
                                          width: iconDiameter, height: iconDiameter)
         
-        addSubview(vitamineImageView)
-        vitamineImageView.frame = CGRect(x: viewCenterPoint.x - diagonalRadiusLength - (space * 2 + iconRadius),
+        addSubview(vitamincImageView)
+        vitamincImageView.frame = CGRect(x: viewCenterPoint.x - diagonalRadiusLength - (space * 2 + iconRadius),
                                          y: viewCenterPoint.y + diagonalRadiusLength + space,
                                          width: iconDiameter, height: iconDiameter)
         
-        addSubview(vitaminbImageView)
-        vitaminbImageView.frame = CGRect(x: viewCenterPoint.x - radiusLength - (space + iconDiameter),
+        addSubview(vitamindImageView)
+        vitamindImageView.frame = CGRect(x: viewCenterPoint.x - radiusLength - (space + iconDiameter),
                                          y: viewCenterPoint.y - iconRadius,
                                          width: iconDiameter, height: iconDiameter)
         
-        addSubview(vitamincImageView)
-        vitamincImageView.frame = CGRect(x: viewCenterPoint.x - diagonalRadiusLength - (space * 3 + iconRadius),
+        addSubview(vitamineImageView)
+        vitamineImageView.frame = CGRect(x: viewCenterPoint.x - diagonalRadiusLength - (space * 3 + iconRadius),
                                          y: viewCenterPoint.y - diagonalRadiusLength - (space + iconRadius),
                                          width: iconDiameter, height: iconDiameter)
     }
     
     func drawGraphByUsingFoodData() {
         
-        let protain = CGFloat(amountData["protain"] ?? 0)
+        let protein = CGFloat(amountData["protein"] ?? 0)
         let calcium = CGFloat(amountData["calcium"] ?? 0)
         let iron = CGFloat(amountData["iron"] ?? 0)
-        let vitamina = CGFloat(amountData["vitamina"] ?? 0)
-        let vitamind = CGFloat(amountData["vitamind"] ?? 0)
-        let vitamine = CGFloat(amountData["vitamine"] ?? 0)
-        let vitaminb = CGFloat(amountData["vitaminb"] ?? 0)
-        let vitaminc = CGFloat(amountData["vitaminc"] ?? 0)
+        let vitaminA = CGFloat(amountData["vitaminA"] ?? 0)
+        let vitaminB = CGFloat(amountData["vitaminB"] ?? 0)
+        let vitaminC = CGFloat(amountData["vitaminC"] ?? 0)
+        let vitaminD = CGFloat(amountData["vitaminD"] ?? 0)
+        let vitaminE = CGFloat(amountData["vitaminE"] ?? 0)
         
-        let proteineBorderLength = radiusLength * (protain / idealProteinAmount)
+        let proteineBorderLength = radiusLength * (protein / idealProteinAmount)
         let proteinY = viewCenterPoint.y - proteineBorderLength
         let proteinPoint = CGPoint(x: viewCenterPoint.x, y: proteinY)
 
@@ -201,7 +201,7 @@ class GraphView: UIView {
         createCircle(point: ironPoint)
         createBorder(startPoint: calciumPoint, endPoint: ironPoint, base: false)
         
-        let vitaminaBorderLength = diagonalRadiusLength * (vitamina / idealVitaminaAmount)
+        let vitaminaBorderLength = diagonalRadiusLength * (vitaminA / idealVitaminaAmount)
         let vitaminaX = viewCenterPoint.x + vitaminaBorderLength
         let vitaminaY = viewCenterPoint.y + vitaminaBorderLength
         let vitaminaPoint = CGPoint(x: vitaminaX, y: vitaminaY)
@@ -210,7 +210,7 @@ class GraphView: UIView {
         createCircle(point: vitaminaPoint)
         createBorder(startPoint: ironPoint, endPoint: vitaminaPoint, base: false)
         
-        let vitamindBorderLength = radiusLength * (vitamind / idealVitamindAmount)
+        let vitamindBorderLength = radiusLength * (vitaminB / idealVitaminbAmount)
         let vitamindY = viewCenterPoint.y + vitamindBorderLength
         let vitamindPoint = CGPoint(x: viewCenterPoint.x, y: vitamindY)
         
@@ -218,7 +218,7 @@ class GraphView: UIView {
         createCircle(point: vitamindPoint)
         createBorder(startPoint: vitaminaPoint, endPoint: vitamindPoint, base: false)
         
-        let vitamineBorderLength = diagonalRadiusLength * (vitamine / idealVitamineAmount)
+        let vitamineBorderLength = diagonalRadiusLength * (vitaminC / idealVitamincAmount)
         let vitamineX = viewCenterPoint.x - vitamineBorderLength
         let vitamineY = viewCenterPoint.y + vitamineBorderLength
         let vitaminePoint = CGPoint(x: vitamineX, y: vitamineY)
@@ -227,7 +227,7 @@ class GraphView: UIView {
         createCircle(point: vitaminePoint)
         createBorder(startPoint: vitamindPoint, endPoint: vitaminePoint, base: false)
         
-        let vitaminbBorderLength = radiusLength * (vitaminb / idealVitaminbAmount)
+        let vitaminbBorderLength = radiusLength * (vitaminD / idealVitamindAmount)
         let vitaminbX = viewCenterPoint.x - vitaminbBorderLength
         let vitaminbPoint = CGPoint(x: vitaminbX, y: viewCenterPoint.y)
         
@@ -235,7 +235,7 @@ class GraphView: UIView {
         createCircle(point: vitaminbPoint)
         createBorder(startPoint: vitaminePoint, endPoint: vitaminbPoint, base: false)
         
-        let vitamincBorderLength = diagonalRadiusLength * (vitaminc / idealVitamincAmount)
+        let vitamincBorderLength = diagonalRadiusLength * (vitaminE / idealVitamineAmount)
         let vitamincX = viewCenterPoint.x - vitamincBorderLength
         let vitamincY = viewCenterPoint.y - vitamincBorderLength
         let vitamincPoint = CGPoint(x: vitamincX, y: vitamincY)

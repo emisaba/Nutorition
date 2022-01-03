@@ -1,8 +1,15 @@
 import UIKit
 
+protocol FoodListViewDelegate {
+    func didSelect(ingredientDetaile: IngredientDetaile)
+    func didDeselect(ingredientDetaile: IngredientDetaile)
+}
+
 class FoodListView: UIView {
     
     // MARK: - Properties
+    
+    public var delegate: FoodListViewDelegate?
     
     private let identifier = "identifier"
     private lazy var collectionView: UICollectionView = {
@@ -15,6 +22,10 @@ class FoodListView: UIView {
         cv.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         return cv
     }()
+    
+    public var ingredientDetailes: [IngredientDetaile] = [] {
+        didSet { collectionView.reloadData() }
+    }
     
     // MARK: - LifeCycle
     
@@ -34,11 +45,12 @@ class FoodListView: UIView {
 
 extension FoodListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return ingredientDetailes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! FoodListViewCell
+        cell.viewModel = FoodListViewCellViewModel(ingredientDetaile: ingredientDetailes[indexPath.row])
         return cell
     }
 }
@@ -48,12 +60,16 @@ extension FoodListView: UICollectionViewDataSource {
 extension FoodListView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? FoodListViewCell else { return }
+        guard let ingredientDetaile = cell.viewModel?.ingredientDetaile else { return }
+        
         cell.didSelect.toggle()
         
         if cell.didSelect {
             cell.didSelectUI()
+            delegate?.didSelect(ingredientDetaile: ingredientDetaile)
         } else {
             cell.didDeselectUI()
+            delegate?.didDeselect(ingredientDetaile: ingredientDetaile)
         }
     }
 }
@@ -70,6 +86,8 @@ extension FoodListView: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 65, height: 65)
+        let width = (frame.width - 40) / 3
+        let height = width + 60
+        return CGSize(width: width, height: height)
     }
 }

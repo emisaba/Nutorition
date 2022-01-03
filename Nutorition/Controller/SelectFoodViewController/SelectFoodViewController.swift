@@ -21,14 +21,6 @@ class SelectFoodViewController: UIViewController {
         return sb
     }()
     
-    private lazy var backButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 30
-        button.backgroundColor = .systemTeal
-        button.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
-        return button
-    }()
-    
     private var searchFoods = [Food]()
     
     public var completion: ((Food) -> Void)?
@@ -84,19 +76,6 @@ class SelectFoodViewController: UIViewController {
                          left: view.leftAnchor,
                          bottom: view.safeAreaLayoutGuide.bottomAnchor,
                          right: view.rightAnchor)
-        
-        view.addSubview(backButton)
-        backButton.anchor(left: view.leftAnchor,
-                          bottom: view.safeAreaLayoutGuide.bottomAnchor,
-                          paddingLeft: 30,
-                          paddingBottom: 30)
-        backButton.setDimensions(height: 60, width: 60)
-    }
-    
-    // MARK: - Actions
-    
-    @objc func didTapBackButton() {
-        navigationController?.popViewController(animated: true)
     }
 }
 

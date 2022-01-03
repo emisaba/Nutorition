@@ -5,7 +5,7 @@ class TopIngredientView: UIView {
     // MARK: - Properties
     
     private let identifier = "identifier"
-    private lazy var recipeCollectionView: UIView = {
+    private lazy var recipeCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.delegate = self
@@ -14,6 +14,10 @@ class TopIngredientView: UIView {
         cv.backgroundColor = .white
         return cv
     }()
+    
+    public var ingredientDetailes: [IngredientDetaile] = [] {
+        didSet { recipeCollectionView.reloadData() }
+    }
     
     // MARK: - Lifecycle
     
@@ -33,11 +37,12 @@ class TopIngredientView: UIView {
 
 extension TopIngredientView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return ingredientDetailes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! TopIngredientViewCell
+        cell.imageUrl = ingredientDetailes[indexPath.row].imageUrl
         return cell
     }
 }

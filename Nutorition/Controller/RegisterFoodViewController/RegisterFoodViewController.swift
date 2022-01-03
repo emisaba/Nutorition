@@ -104,7 +104,7 @@ class RegisterFoodViewController: UITableViewController {
     
     func calculateNutorition(amount: Double) {
         
-        guard let protain = Double(food.protein) else { return }
+        guard let protein = Double(food.protein) else { return }
         guard let calcium = Double(food.calcium) else { return }
         guard let iron = Double(food.iron) else { return }
         guard let vitaminA = Double(food.vitaminA) else { return }
@@ -113,23 +113,23 @@ class RegisterFoodViewController: UITableViewController {
         guard let vitaminB = Double(food.vitaminB) else { return }
         guard let vitaminC = Double(food.vitaminC) else { return }
         
-        let updatedProtain = protain / 100.0 * amount
+        let updatedprotein = protein / 100.0 * amount
         let updatedCalcium = calcium / 100.0 * amount
         let updatedIron = iron / 100.0 * amount
         let updatedVitaminA = vitaminA / 100.0 * amount
-        let updatedVitaminD = vitaminD / 100.0 * amount
-        let updatedVitaminE = vitaminE / 100.0 * amount
         let updatedVitaminB = vitaminB / 100.0 * amount
         let updatedVitaminC = vitaminC / 100.0 * amount
+        let updatedVitaminD = vitaminD / 100.0 * amount
+        let updatedVitaminE = vitaminE / 100.0 * amount
         
-        food.protein = String(updatedProtain)
+        food.protein = String(updatedprotein)
         food.calcium = String(updatedCalcium)
         food.iron = String(updatedIron)
         food.vitaminA = String(updatedVitaminA)
-        food.vitaminD = String(updatedVitaminD)
-        food.vitaminE = String(updatedVitaminE)
         food.vitaminB = String(updatedVitaminB)
         food.vitaminC = String(updatedVitaminC)
+        food.vitaminD = String(updatedVitaminD)
+        food.vitaminE = String(updatedVitaminE)
     }
 }
 

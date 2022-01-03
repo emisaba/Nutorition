@@ -33,10 +33,10 @@ class FoodCollectonViewController: UICollectionViewController {
     public var calciums = [Double]()
     public var irons = [Double]()
     public var vitaminaAs = [Double]()
-    public var vitaminDs = [Double]()
-    public var vitaminEs = [Double]()
     public var vitaminBs = [Double]()
     public var vitaminCs = [Double]()
+    public var vitaminDs = [Double]()
+    public var vitaminEs = [Double]()
     
     public var carbons = [FoodItem]()
     public var veges = [FoodItem]()

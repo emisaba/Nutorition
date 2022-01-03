@@ -3,41 +3,47 @@ import Firebase
 
 struct FoodService {
     
-    static func uploadFoodInfo(food: Food, completion: @escaping (String) -> Void) {
+    static func uploadFoodInfo(food: IngredientInfo, completion: @escaping (String) -> Void) {
         
         let ref = COLLECTION_FOODS.document()
         let foodID = ref.documentID
         
-        let protein = food.protein
-        let calcium = food.calcium
-        let iron = food.iron
-        let vitaminA = food.vitaminA
-        let vitaminB = food.vitaminB
-        let vitaminC = food.vitaminC
-        let vitaminE = food.vitaminE
-        let vitaminD = food.vitaminD
+        let protein = food.ingredient.protein
+        let calcium = food.ingredient.calcium
+        let iron = food.ingredient.iron
+        let vitaminA = food.ingredient.vitaminA
+        let vitaminB = food.ingredient.vitaminB
+        let vitaminC = food.ingredient.vitaminC
+        let vitaminE = food.ingredient.vitaminE
+        let vitaminD = food.ingredient.vitaminD
         
-        let data: [String: String] = ["foodID": foodID,
-                                      "protein": protein,
-                                      "calcium": calcium,
-                                      "iron": iron,
-                                      "vitaminA": vitaminA,
-                                      "vitaminB": vitaminB,
-                                      "vitaminC": vitaminC,
-                                      "vitaminE": vitaminE,
-                                      "vitaminD": vitaminD]
-        
-        ref.setData(data) { error in
-            if let error = error {
-                print("failed to upload food info: \(error.localizedDescription)")
-                return
-            }
+        ImageUploader.uploadFoodImage(image: food.image) { imageUrl in
             
-            completion(foodID)
+            let data: [String: String] = ["foodName": food.name,
+                                          "foodID": foodID,
+                                          "imageUrl": imageUrl,
+                                          "amount": food.amount,
+                                          "protein": protein,
+                                          "calcium": calcium,
+                                          "iron": iron,
+                                          "vitaminA": vitaminA,
+                                          "vitaminB": vitaminB,
+                                          "vitaminC": vitaminC,
+                                          "vitaminD": vitaminD,
+                                          "vitaminE": vitaminE]
+            
+            ref.setData(data) { error in
+                if let error = error {
+                    print("failed to upload food info: \(error.localizedDescription)")
+                    return
+                }
+                
+                completion(foodID)
+            }
         }
     }
     
-    static func fetchFoodInfo(completion: @escaping (([FoodItem]) -> Void)) {
+    static func fetchFoodInfo(completion: @escaping ([FoodItem]) -> Void) {
         COLLECTION_FOODS.getDocuments { snapshot, error in
             guard let documents = snapshot?.documents else { return }
             

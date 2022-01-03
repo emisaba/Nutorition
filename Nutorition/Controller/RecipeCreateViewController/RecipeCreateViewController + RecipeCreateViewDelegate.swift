@@ -1,14 +1,14 @@
 import UIKit
 
 struct AmountDataSum {
-    let protain: Double
+    let protein: Double
     let calcium: Double
     let iron: Double
-    let vitamina: Double
-    let vitamind: Double
-    let vitamine: Double
-    let vitaminb: Double
-    let vitaminc: Double
+    let vitaminA: Double
+    let vitaminB: Double
+    let vitaminC: Double
+    let vitaminD: Double
+    let vitaminE: Double
 }
 
 // MARK: - RecipeCreateViewDelegate
@@ -36,7 +36,7 @@ extension RecipeCreateViewController: RecipeCreateViewDelegate {
         guard let type = updateCell?.viewModel?.recipeDetaileType, type == .ingredient else { return }
         guard let amount = Double(amount) else { return }
         
-        guard let protain = Double(food.protein) else { return }
+        guard let protein = Double(food.protein) else { return }
         guard let calcium = Double(food.calcium) else { return }
         guard let iron = Double(food.iron) else { return }
         guard let vitaminA = Double(food.vitaminA) else { return }
@@ -45,9 +45,7 @@ extension RecipeCreateViewController: RecipeCreateViewDelegate {
         guard let vitaminB = Double(food.vitaminB) else { return }
         guard let vitaminC = Double(food.vitaminC) else { return }
         
-        print("###オリジナル: \(protain)")
-        
-        let calculatedProtain = protain / 100 * amount
+        let calculatedprotein = protein / 100 * amount
         let calculatedCalcium = calcium / 100  * amount
         let calculatedIron = iron / 100  * amount
         let calculatedVitaminA = vitaminA / 100  * amount
@@ -56,54 +54,49 @@ extension RecipeCreateViewController: RecipeCreateViewDelegate {
         let calculatedVitaminB = vitaminB / 100  * amount
         let calculatedVitaminC = vitaminC / 100  * amount
         
-        print("###オリジナル * 指定amount: \(calculatedProtain)")
-        
-        let newFoodData = AmountDataSum(protain: calculatedProtain,
+        let newFoodData = AmountDataSum(protein: calculatedprotein,
                                         calcium: calculatedCalcium,
                                         iron: calculatedIron,
-                                        vitamina: calculatedVitaminA,
-                                        vitamind: calculatedVitaminD,
-                                        vitamine: calculatedVitaminE,
-                                        vitaminb: calculatedVitaminB,
-                                        vitaminc: calculatedVitaminC)
+                                        vitaminA: calculatedVitaminA,
+                                        vitaminB: calculatedVitaminD,
+                                        vitaminC: calculatedVitaminE,
+                                        vitaminD: calculatedVitaminB,
+                                        vitaminE: calculatedVitaminC)
         
         calculateAmountSum(NewFoodData: newFoodData)
     }
     
     func calculateAmountSum(NewFoodData: AmountDataSum) {
         
-        let newProtain = foodSum.protain + NewFoodData.protain
-        let newCalcium = foodSum.calcium + NewFoodData.protain
+        let newprotein = foodSum.protein + NewFoodData.protein
+        let newCalcium = foodSum.calcium + NewFoodData.protein
         let newIron = foodSum.iron + NewFoodData.iron
-        let newVitaminA = foodSum.vitamina + NewFoodData.vitamina
-        let newVitaminD = foodSum.vitamind + NewFoodData.vitamind
-        let newVitaminE = foodSum.vitamine + NewFoodData.vitamine
-        let newVitaminB = foodSum.vitaminb + NewFoodData.vitaminb
-        let newVitaminC = foodSum.vitaminc + NewFoodData.vitaminc
+        let newVitaminA = foodSum.vitaminA + NewFoodData.vitaminA
+        let newVitaminD = foodSum.vitaminB + NewFoodData.vitaminB
+        let newVitaminE = foodSum.vitaminC + NewFoodData.vitaminC
+        let newVitaminB = foodSum.vitaminD + NewFoodData.vitaminD
+        let newVitaminC = foodSum.vitaminE + NewFoodData.vitaminE
         
-        print("###大元 : \(foodSum.protain)")
-        print("###オリジナル * 指定amount を大元にプラス : \(newProtain)")
-        
-        let amountData = ["protain": newProtain,
+        let amountData = ["protein": newprotein,
                           "calcium": newCalcium,
                           "iron": newIron,
-                          "vitamina": newVitaminA,
-                          "vitamind": newVitaminD,
-                          "vitamine": newVitaminE,
-                          "vitaminb": newVitaminB,
-                          "vitaminc": newVitaminC]
+                          "vitaminA": newVitaminA,
+                          "vitaminB": newVitaminB,
+                          "vitaminC": newVitaminC,
+                          "vitaminD": newVitaminD,
+                          "vitaminE": newVitaminE]
         
         recipeCreateView.graphView.amountData = amountData
         recipeCreateView.graphView.layoutIfNeeded()
         
-        self.foodSum = AmountDataSum(protain: newProtain,
+        self.foodSum = AmountDataSum(protein: newprotein,
                                      calcium: newCalcium,
                                      iron: newIron,
-                                     vitamina: newVitaminA,
-                                     vitamind: newVitaminD,
-                                     vitamine: newVitaminE,
-                                     vitaminb: newVitaminB,
-                                     vitaminc: newVitaminC)
+                                     vitaminA: newVitaminA,
+                                     vitaminB: newVitaminB,
+                                     vitaminC: newVitaminC,
+                                     vitaminD: newVitaminD,
+                                     vitaminE: newVitaminE)
     }
     
     func showIngredientImagePicker(updateCell: RecipeCreateViewCell) {

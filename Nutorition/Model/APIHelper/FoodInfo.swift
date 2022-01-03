@@ -12,8 +12,8 @@ struct FoodAmount {
     let calcium: String
     let iron: String
     let vitaminA: String
-    let vitaminD: String
-    let vitaminE: String
     let vitaminB: String
     let vitaminC: String
+    let vitaminD: String
+    let vitaminE: String
 }

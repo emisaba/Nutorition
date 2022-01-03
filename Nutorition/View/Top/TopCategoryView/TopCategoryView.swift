@@ -8,7 +8,6 @@ class CategoryView: UIView {
     
     private lazy var collectionVIew: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.scrollDirection = .horizontal
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -20,6 +19,15 @@ class CategoryView: UIView {
         cv.showsHorizontalScrollIndicator = false
         return cv
     }()
+    
+    private let categoryTitles: [String] = ["タンパク質",
+                                            "カルシウム",
+                                            "鉄",
+                                            "ビタミンA",
+                                            "ビタミンB",
+                                            "ビタミンC",
+                                            "ビタミンD",
+                                            "ビタミンE"]
     
     // MARK: - Lifecycle
     
@@ -39,12 +47,12 @@ class CategoryView: UIView {
 
 extension CategoryView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return categoryTitles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! TopCategoryViewCell
-        cell.backgroundColor = .systemBlue
+        cell.categoryTitle = categoryTitles[indexPath.row]
         return cell
     }
 }
@@ -59,9 +67,9 @@ extension CategoryView: UICollectionViewDelegate {
 
 extension CategoryView: UICollectionViewDelegateFlowLayout {
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: 100, height: 50)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 100, height: 50)
+    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10

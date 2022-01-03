@@ -1,8 +1,13 @@
 import UIKit
+import SDWebImage
 
 class TopIngredientViewCell: UICollectionViewCell {
     
     // MARK: - Properties
+    
+    public var imageUrl: String? {
+        didSet { imageView.sd_setImage(with: URL(string: imageUrl ?? ""), completed: nil) }
+    }
     
     private let imageView = UIImageView.createImageView(image: #imageLiteral(resourceName: "fruit"), cornerRadius: 25)
     

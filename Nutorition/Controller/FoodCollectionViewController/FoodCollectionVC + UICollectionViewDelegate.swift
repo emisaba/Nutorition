@@ -19,10 +19,10 @@ extension FoodCollectonViewController {
         guard let calcium = Double(amount["calcium"] ?? "") else { return }
         guard let iron = Double(amount["iron"] ?? "") else  { return }
         guard let vitaminA = Double(amount["vitaminA"] ?? "") else { return }
-        guard let vitaminD = Double(amount["vitaminD"] ?? "") else { return }
-        guard let vitaminE = Double(amount["vitaminE"] ?? "") else { return }
         guard let vitaminB = Double(amount["vitaminB"] ?? "") else { return }
         guard let vitaminC = Double(amount["vitaminC"] ?? "") else { return }
+        guard let vitaminD = Double(amount["vitaminD"] ?? "") else { return }
+        guard let vitaminE = Double(amount["vitaminE"] ?? "") else { return }
         
         foodNames.append(name)
         
@@ -30,45 +30,45 @@ extension FoodCollectonViewController {
         calciums.append(calcium)
         irons.append(iron)
         vitaminaAs.append(vitaminA)
-        vitaminDs.append(vitaminD)
-        vitaminEs.append(vitaminE)
         vitaminBs.append(vitaminB)
         vitaminCs.append(vitaminC)
+        vitaminDs.append(vitaminD)
+        vitaminEs.append(vitaminE)
     }
     
     func getDataFromExistingFoodData() {
         
         let existingFoodData = userDefaults.amountValue()
         if existingFoodData.count > 0 {
-            proteins.append(existingFoodData["protain"] ?? 0)
+            proteins.append(existingFoodData["protein"] ?? 0)
             calciums.append(existingFoodData["calcium"] ?? 0)
             irons.append(existingFoodData["iron"] ?? 0)
             vitaminaAs.append(existingFoodData["vitamina"] ?? 0)
-            vitaminDs.append(existingFoodData["vitamind"] ?? 0)
-            vitaminEs.append(existingFoodData["vitamine"] ?? 0)
             vitaminBs.append(existingFoodData["vitaminb"] ?? 0)
             vitaminCs.append(existingFoodData["vitaminc"] ?? 0)
+            vitaminDs.append(existingFoodData["vitamind"] ?? 0)
+            vitaminEs.append(existingFoodData["vitamine"] ?? 0)
         }
     }
     
     func createNewDataFromExistingDataAndSelectedData() {
-        let protainSum = proteins.reduce(0) { $0 + $1 }
+        let proteinSum = proteins.reduce(0) { $0 + $1 }
         let calciumSum = calciums.reduce(0) { $0 + $1 }
         let ironSum = irons.reduce(0) { $0 + $1 }
         let vitaminaSum = vitaminaAs.reduce(0) { $0 + $1 }
-        let vitamindSum = vitaminDs.reduce(0) { $0 + $1 }
-        let vitamineSum = vitaminEs.reduce(0) { $0 + $1 }
         let vitaminbSum = vitaminBs.reduce(0) { $0 + $1 }
         let vitamincSum = vitaminCs.reduce(0) { $0 + $1 }
+        let vitamindSum = vitaminDs.reduce(0) { $0 + $1 }
+        let vitamineSum = vitaminEs.reduce(0) { $0 + $1 }
         
-        amountData = ["protain": protainSum,
+        amountData = ["protein": proteinSum,
                       "calcium": calciumSum,
                       "iron": ironSum,
-                      "vitamina": vitaminaSum,
-                      "vitamind": vitamindSum,
-                      "vitamine": vitamineSum,
-                      "vitaminb": vitaminbSum,
-                      "vitaminc": vitamincSum]
+                      "vitaminA": vitaminaSum,
+                      "vitaminB": vitaminbSum,
+                      "vitaminC": vitamincSum,
+                      "vitaminD": vitamindSum,
+                      "vitaminE": vitamineSum]
         
         userDefaults.setAmountValue(value: amountData)
     }

@@ -7,7 +7,7 @@ class RecipeListViewController: UIViewController {
     private let topIngredientView = TopIngredientView()
     
     private let identifier = "identifier"
-    private lazy var recipeCollectionView: UIView = {
+    private lazy var recipeCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.delegate = self
@@ -17,17 +17,44 @@ class RecipeListViewController: UIViewController {
         return cv
     }()
     
+    public var selectedIngredients: [IngredientDetaile] = []
+    
+    private var recipes: [Recipe] = []
+    
     // MARK: - Lifecycle
+    
+    init(selectedIngredients: [IngredientDetaile]) {
+        self.topIngredientView.ingredientDetailes = selectedIngredients
+        self.selectedIngredients = selectedIngredients
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
+        fetchRecipes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
+    }
+    
+    // MARK: - API
+    
+    func fetchRecipes() {
+        selectedIngredients.forEach { selectedIngredient in
+            RecipeService.fetchRecipes(foodId: selectedIngredient.foodID) { recipes in
+                self.recipes = recipes
+                self.recipeCollectionView.reloadData()
+            }
+        }
     }
     
     // MARK: - Helpers
@@ -55,11 +82,12 @@ class RecipeListViewController: UIViewController {
 
 extension RecipeListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return recipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! RecipeListCell
+        cell.viewModel = RecipeListCellViewModel(recipe: recipes[indexPath.row])
         return cell
     }
 }
@@ -68,7 +96,7 @@ extension RecipeListViewController: UICollectionViewDataSource {
 
 extension RecipeListViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = RecipeDetaileViewController()
+        let vc = RecipeDetaileViewController(recipe: recipes[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -78,7 +106,7 @@ extension RecipeListViewController: UICollectionViewDelegate {
 extension RecipeListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width: CGFloat = view.frame.width
-        let height: CGFloat = width + 80
+        let height: CGFloat = width + 90
         return CGSize(width: width, height: height)
     }
 }

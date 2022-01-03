@@ -31,14 +31,14 @@ class RecipeCreateViewController: UIViewController {
                                                         width: view.frame.width,
                                                         height: view.frame.width), isTop: false)
     
-    public var foodSum = AmountDataSum(protain: 0.0,
+    public var foodSum = AmountDataSum(protein: 0.0,
                                        calcium: 0.0,
                                        iron: 0.0,
-                                       vitamina: 0.0,
-                                       vitamind: 0.0,
-                                       vitamine: 0.0,
-                                       vitaminb: 0.0,
-                                       vitaminc: 0.0)
+                                       vitaminA: 0.0,
+                                       vitaminB: 0.0,
+                                       vitaminC: 0.0,
+                                       vitaminD: 0.0,
+                                       vitaminE: 0.0)
     
     // MARK: - Lifecycle
     
@@ -129,7 +129,7 @@ class RecipeCreateViewController: UIViewController {
             guard let ingredientInfo = ingredientInfo else { return }
             
             ingredientInfos.forEach { if $0.name == name || $0.amount == amount  { return } }
-            ingredientInfos.append(ingredientInfo)
+            ingredientInfos.insert(ingredientInfo, at: 0)
             
         case .spice:
             let name = updateCell.nameTextFieldText()

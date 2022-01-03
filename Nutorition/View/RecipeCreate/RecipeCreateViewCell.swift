@@ -49,8 +49,6 @@ class RecipeCreateViewCell: UITableViewCell {
                                                           target: self,
                                                           action: #selector(inputInfo))
     
-    private let spiceGramLabel = UILabel.createLabel(text: "g", size: 18)
-    
     private let stepNumberLabel  = UILabel.createLabel(text: "", size: 14)
     private let descriptionTextView = UITextView.createTextView(text: "", size: 18, interraction: true)
     private let descripeionPlaceholder = UILabel.createLabel(text: "説明を入力してください...", size: 18)
@@ -127,13 +125,8 @@ class RecipeCreateViewCell: UITableViewCell {
         spiceNameTextField.delegate = self
         spiceNameTextField.isHidden = viewModel.isNameTextFieldHidden
         
-        addSubview(spiceGramLabel)
-        spiceGramLabel.anchor(right: rightAnchor, paddingRight: 10)
-        spiceGramLabel.centerY(inView: self)
-        spiceGramLabel.isHidden = viewModel.isSpiceGramLabelHidden
-        
         addSubview(spiceAmountLabel)
-        spiceAmountLabel.anchor(right: spiceGramLabel.leftAnchor, paddingRight: 10)
+        spiceAmountLabel.anchor(right: rightAnchor, paddingRight: 10)
         spiceAmountLabel.centerY(inView: self)
         spiceAmountLabel.delegate = self
         spiceAmountLabel.isHidden = viewModel.isSpiceAmountLabelHidden

@@ -5,7 +5,7 @@ struct RecipeDetaileViewModel {
     let indexPath: IndexPath
     let recipeDetaileType: RecipeDetaileType
     
-    var ingredient: Ingredient? {
+    var ingredient: IngredientDetaile? {
         guard let ingredient = recipeDetaile.ingredient?[indexPath.row] else { return nil }
         return ingredient
     }
