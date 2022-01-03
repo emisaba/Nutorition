@@ -1,56 +1,39 @@
 import UIKit
 import Firebase
 
-struct  FoodInfo {
-    let foodImage: UIImage
-    let foodName: String
-    let amount: FoodAmount
-    let foodCategory: String
-}
-
-struct FoodAmount {
-    let protein: String
-    let calcium: String
-    let iron: String
-    let vitaminA: String
-    let vitaminD: String
-    let vitaminE: String
-    let vitaminB: String
-    let vitaminC: String
-}
-
 struct FoodService {
     
-    static func uploadFoodInfo(foodInfo: FoodInfo, completion: @escaping ((Error?) -> Void)) {
+    static func uploadFoodInfo(food: Food, completion: @escaping (String) -> Void) {
         
-        ImageUploader.uploadFoodImage(image: foodInfo.foodImage) { imageUrl in
+        let ref = COLLECTION_FOODS.document()
+        let foodID = ref.documentID
+        
+        let protein = food.protein
+        let calcium = food.calcium
+        let iron = food.iron
+        let vitaminA = food.vitaminA
+        let vitaminB = food.vitaminB
+        let vitaminC = food.vitaminC
+        let vitaminE = food.vitaminE
+        let vitaminD = food.vitaminD
+        
+        let data: [String: String] = ["foodID": foodID,
+                                      "protein": protein,
+                                      "calcium": calcium,
+                                      "iron": iron,
+                                      "vitaminA": vitaminA,
+                                      "vitaminB": vitaminB,
+                                      "vitaminC": vitaminC,
+                                      "vitaminE": vitaminE,
+                                      "vitaminD": vitaminD]
+        
+        ref.setData(data) { error in
+            if let error = error {
+                print("failed to upload food info: \(error.localizedDescription)")
+                return
+            }
             
-            let protein = foodInfo.amount.protein
-            let calcium = foodInfo.amount.calcium
-            let iron = foodInfo.amount.iron
-            let vitaminA = foodInfo.amount.vitaminA
-            let vitaminB = foodInfo.amount.vitaminB
-            let vitaminC = foodInfo.amount.vitaminC
-            let vitaminE = foodInfo.amount.vitaminE
-            let vitaminD = foodInfo.amount.vitaminD
-            
-            let name = foodInfo.foodName
-            let amount: [String: String] = ["protein": protein,
-                                            "calcium": calcium,
-                                            "iron": iron,
-                                            "vitaminA": vitaminA,
-                                            "vitaminB": vitaminB,
-                                            "vitaminC": vitaminC,
-                                            "vitaminE": vitaminE,
-                                            "vitaminD": vitaminD]
-            let category = foodInfo.foodCategory
-            
-            let data:[String: Any] = ["foodImageUrl": imageUrl,
-                                      "foodName": name,
-                                      "amount": amount,
-                                      "foodCategory": category]
-            
-            COLLECTION_FOODS.document(name).setData(data, completion: completion)
+            completion(foodID)
         }
     }
     

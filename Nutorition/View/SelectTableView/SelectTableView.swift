@@ -50,5 +50,10 @@ extension SelectTableView: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension SelectTableView: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
+        guard let selectTableViewCell = cell as? SelectTableViewCell else { return }
+        
+        
+    }
 }

@@ -10,7 +10,7 @@ class SelectFoodViewController: UIViewController {
         let tv = UITableView()
         tv.delegate = self
         tv.dataSource = self
-        tv.register(UITableViewCell.self, forCellReuseIdentifier: identifier)
+        tv.register(SelectFoodViewCell.self, forCellReuseIdentifier: identifier)
         return tv
     }()
     
@@ -30,6 +30,8 @@ class SelectFoodViewController: UIViewController {
     }()
     
     private var searchFoods = [Food]()
+    
+    public var completion: ((Food) -> Void)?
     
     // MARK: - Lifecycle
     
@@ -118,9 +120,8 @@ extension SelectFoodViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath)
-        cell.textLabel?.text = searchFoods[indexPath.row].food_name
-        cell.textLabel?.numberOfLines = 0
+        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! SelectFoodViewCell
+        cell.titleLabel.text = searchFoods[indexPath.row].food_name
         return cell
     }
 }
@@ -133,7 +134,9 @@ extension SelectFoodViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = RegisterFoodViewController(food: searchFoods[indexPath.row])
-        navigationController?.pushViewController(vc, animated: true)
+        let food = searchFoods[indexPath.row]
+        completion?(food)
+        
+        dismiss(animated: true, completion: nil)
     }
 }

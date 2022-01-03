@@ -1,13 +1,13 @@
 import UIKit
 
-class CanvasView: UIView {
+class GraphView: UIView {
     
     // MARK: - Property
     
     private let viewFrame: CGRect
-    private lazy var viewCenterPoint = CGPoint(x: viewFrame.width / 2, y: viewFrame.height / 2 - 120)
-    private lazy var radiusLength = (viewFrame.width - 100) / 2
-    private let diagonalRadiusLength: CGFloat = 102.5
+    private lazy var viewCenterPoint = CGPoint(x: 0, y: 0)
+    private lazy var radiusLength = (viewFrame.width - 190) / 2
+    private let diagonalRadiusLength: CGFloat = 70.5
     
     private let idealProteinAmount: CGFloat = 50
     private let idealCalciumAmount: CGFloat = 650
@@ -25,13 +25,25 @@ class CanvasView: UIView {
         }
     }
     
+    private lazy var protainImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var calciumImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var ironImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var vitaminaImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var vitamindImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var vitamineImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var vitaminbImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    private lazy var vitamincImageView = createImageView(image: #imageLiteral(resourceName: "fruit"))
+    
     // MARK: - LifeCycle
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, isTop: Bool) {
         self.viewFrame = frame
         
         super.init(frame: frame)
-        backgroundColor = .clear
+        backgroundColor = .systemYellow
+        
+        viewCenterPoint = CGPoint(x: viewFrame.width / 2,
+                                  y: isTop ? viewFrame.height / 2 + 15 : viewFrame.height / 2)
     }
 
     required init?(coder: NSCoder) {
@@ -106,9 +118,57 @@ class CanvasView: UIView {
             createBorder(startPoint: line7scale, endPoint: line8scale, base: true)
             createBorder(startPoint: line8scale, endPoint: line1scale, base: true)
         }
+        
+        setIconImage()
     }
     
-    func             drawGraphByUsingFoodData() {
+    func setIconImage() {
+        let iconRadius: CGFloat = 15
+        let iconDiameter: CGFloat = 40
+        let space: CGFloat = 15
+        
+        addSubview(protainImageView)
+        protainImageView.frame = CGRect(x: viewCenterPoint.x - iconRadius,
+                                        y: viewCenterPoint.y - radiusLength - space - iconDiameter,
+                                        width: iconDiameter, height: iconDiameter)
+        
+        addSubview(calciumImageView)
+        calciumImageView.frame = CGRect(x: viewCenterPoint.x + diagonalRadiusLength + space,
+                                        y: viewCenterPoint.y - diagonalRadiusLength - (space + iconRadius),
+                                        width: iconDiameter, height: iconDiameter)
+        
+        addSubview(ironImageView)
+        ironImageView.frame = CGRect(x: viewCenterPoint.x + radiusLength + space,
+                                     y: viewCenterPoint.y - iconRadius,
+                                     width: iconDiameter, height: iconDiameter)
+        
+        addSubview(vitaminaImageView)
+        vitaminaImageView.frame = CGRect(x: viewCenterPoint.x + diagonalRadiusLength + space,
+                                         y: viewCenterPoint.y + diagonalRadiusLength - (space - iconRadius),
+                                         width: iconDiameter, height: iconDiameter)
+            
+        addSubview(vitamindImageView)
+        vitamindImageView.frame = CGRect(x: viewCenterPoint.x - iconRadius,
+                                         y: viewCenterPoint.y + radiusLength + space,
+                                         width: iconDiameter, height: iconDiameter)
+        
+        addSubview(vitamineImageView)
+        vitamineImageView.frame = CGRect(x: viewCenterPoint.x - diagonalRadiusLength - (space * 2 + iconRadius),
+                                         y: viewCenterPoint.y + diagonalRadiusLength + space,
+                                         width: iconDiameter, height: iconDiameter)
+        
+        addSubview(vitaminbImageView)
+        vitaminbImageView.frame = CGRect(x: viewCenterPoint.x - radiusLength - (space + iconDiameter),
+                                         y: viewCenterPoint.y - iconRadius,
+                                         width: iconDiameter, height: iconDiameter)
+        
+        addSubview(vitamincImageView)
+        vitamincImageView.frame = CGRect(x: viewCenterPoint.x - diagonalRadiusLength - (space * 3 + iconRadius),
+                                         y: viewCenterPoint.y - diagonalRadiusLength - (space + iconRadius),
+                                         width: iconDiameter, height: iconDiameter)
+    }
+    
+    func drawGraphByUsingFoodData() {
         
         let protain = CGFloat(amountData["protain"] ?? 0)
         let calcium = CGFloat(amountData["calcium"] ?? 0)
@@ -224,5 +284,14 @@ class CanvasView: UIView {
         UIColor.systemPink.withAlphaComponent(0.2).setFill()
         
         triangle.fill()
+    }
+    
+    func createImageView(image: UIImage) -> UIImageView {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.layer.cornerRadius = 20
+        iv.image = image
+        iv.backgroundColor = .systemPink
+        return iv
     }
 }

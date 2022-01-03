@@ -49,24 +49,24 @@ class RegisterFoodViewController: UITableViewController {
     // MARK: - API
     
     func uploadFoodInfo() {
-        let amount = FoodAmount(protein: food.protein,
-                                calcium: food.calcium,
-                                iron: food.iron,
-                                vitaminA: food.vitaminA,
-                                vitaminD: food.vitaminD,
-                                vitaminE: food.vitaminE,
-                                vitaminB: food.vitaminB,
-                                vitaminC: food.vitaminC)
-        
-        let foodInfo = FoodInfo(foodImage: foodImage, foodName: food.food_name, amount: amount, foodCategory: categoryString)
-        
-        FoodService.uploadFoodInfo(foodInfo: foodInfo) { error in
-            if let error = error {
-                print("ERROR:\(error.localizedDescription)")
-                return
-            }
-            self.navigationController?.popToRootViewController(animated: true)
-        }
+//        let amount = FoodAmount(protein: food.protein,
+//                                calcium: food.calcium,
+//                                iron: food.iron,
+//                                vitaminA: food.vitaminA,
+//                                vitaminD: food.vitaminD,
+//                                vitaminE: food.vitaminE,
+//                                vitaminB: food.vitaminB,
+//                                vitaminC: food.vitaminC)
+//
+//        let foodInfo = FoodInfo(foodImage: foodImage, foodName: food.food_name, amount: amount, foodCategory: categoryString)
+//
+//        FoodService.uploadFoodInfo(food: foodInfo) { error in
+//            if let error = error {
+//                print("ERROR:\(error.localizedDescription)")
+//                return
+//            }
+//            self.navigationController?.popToRootViewController(animated: true)
+//        }
     }
     
     // MARK: - Actions
