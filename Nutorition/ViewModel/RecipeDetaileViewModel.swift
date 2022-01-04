@@ -5,32 +5,34 @@ struct RecipeDetaileViewModel {
     let indexPath: IndexPath
     let recipeDetaileType: RecipeDetaileType
     
-    var ingredient: IngredientDetaile? {
-        guard let ingredient = recipeDetaile.ingredient?[indexPath.row] else { return nil }
+    var ingredient: Ingredient? {
+        guard let ingredient = recipeDetaile.ingredient else { return nil }
         return ingredient
     }
     
     var spice: Spice? {
-        guard let spice = recipeDetaile.spice?[indexPath.row] else { return nil }
+        guard let spice = recipeDetaile.spice else { return nil }
         return spice
     }
     
     var step: Step? {
-        guard let step = recipeDetaile.step?[indexPath.row] else { return nil }
+        guard let step = recipeDetaile.step else { return nil }
         return step
     }
     
     var ingredientImageUrl: URL? {
-        guard let imageUrl = ingredient?.imageUrl else { return nil }
+        if indexPath.section != 0 { return nil }
+        guard let imageUrl = ingredient?.imageUrls[indexPath.row] else { return nil }
         return URL(string: imageUrl)
     }
     
-    var shouldHideIngredientImageUrl: Bool {
+    var shouldHideIngredientImage: Bool {
         return recipeDetaileType == .ingredient ? false : true
     }
     
     var ingredientName: String {
-        guard let name = ingredient?.name else { return "" }
+        if indexPath.section != 0 { return "" }
+        guard let name = ingredient?.names[indexPath.row] else { return "" }
         return name
     }
     
@@ -39,7 +41,8 @@ struct RecipeDetaileViewModel {
     }
     
     var ingredientAmount: String {
-        guard let amount = ingredient?.amount else { return "" }
+        if indexPath.section != 0 { return "" }
+        guard let amount = ingredient?.amounts[indexPath.row] else { return "" }
         return amount
     }
     
@@ -48,7 +51,8 @@ struct RecipeDetaileViewModel {
     }
     
     var spiceName: String {
-        guard let name = spice?.name else { return "" }
+        if indexPath.section != 1 { return "" }
+        guard let name = spice?.names[indexPath.row] else { return "" }
         return name
     }
     
@@ -57,7 +61,8 @@ struct RecipeDetaileViewModel {
     }
     
     var spiceAmount: String {
-        guard let amount = spice?.amount else { return "" }
+        if indexPath.section != 1 { return "" }
+        guard let amount = spice?.amounts[indexPath.row] else { return "" }
         return amount
     }
     
@@ -66,8 +71,8 @@ struct RecipeDetaileViewModel {
     }
     
     var stepNumber: String {
-        guard let number = step?.number else { return "" }
-        return number
+        if indexPath.section != 2 { return "" }
+        return "\(indexPath.row + 1)"
     }
     
     var shouldHideStepNumber: Bool {
@@ -75,7 +80,8 @@ struct RecipeDetaileViewModel {
     }
     
     var stepDescription: String {
-        guard let description = step?.description else { return "" }
+        if indexPath.section != 2 { return "" }
+        guard let description = step?.descriptions[indexPath.row] else { return "" }
         return description
     }
     

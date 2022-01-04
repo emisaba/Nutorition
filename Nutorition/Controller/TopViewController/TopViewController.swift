@@ -19,6 +19,7 @@ class TopViewController: UIViewController {
     private let userDefaults = UserDefaults()
     
     private var selectedIngredients: [IngredientDetaile] = []
+    public var ingredientDetailes: [IngredientDetaile] = []
     
     // MARK: - Lifecycle
     
@@ -33,7 +34,13 @@ class TopViewController: UIViewController {
     // MARK: - API
     
     func fetchIngredient() {
-        IngredientService.fetchIngredient { ingredientDetailes in
+        
+        IngredientService.fetchIngredients { ingredientDetailes in
+            
+            var ingredientDetailes = ingredientDetailes
+            ingredientDetailes.sort { $0.protein > $1.protein }
+            
+            self.ingredientDetailes = ingredientDetailes
             self.foodListView.ingredientDetailes = ingredientDetailes
         }
     }
@@ -64,6 +71,7 @@ class TopViewController: UIViewController {
         graphView.amountData = userDefaults.amountValue()
         
         view.addSubview(categoryView)
+        categoryView.delegate = self
         categoryView.anchor(top: graphView.bottomAnchor,
                             left: view.leftAnchor,
                             right: view.rightAnchor,
@@ -163,5 +171,41 @@ extension TopViewController: FoodListViewDelegate {
         graphView.amountData = amountData
         
         selectedIngredients.removeAll(where: { $0.ingredientID == ingredientDetaile.ingredientID } )
+    }
+}
+
+// MARK: - CategoryViewDelegate
+
+extension TopViewController: CategoryViewDelegate {
+    
+    func didSelectCategory(category: Category) {
+        
+        switch category {
+        case .protein:
+            ingredientDetailes.sort { $0.protein > $1.protein }
+            
+        case .calcium:
+            ingredientDetailes.sort { $0.calcium > $1.calcium }
+            
+        case .iron:
+            ingredientDetailes.sort { $0.iron > $1.iron }
+            
+        case .vitaminA:
+            ingredientDetailes.sort { $0.vitaminA > $1.vitaminA }
+            
+        case .vitaminB:
+            ingredientDetailes.sort { $0.vitaminB > $1.vitaminB }
+            
+        case .vitaminC:
+            ingredientDetailes.sort { $0.vitaminC > $1.vitaminC }
+            
+        case .vitaminD:
+            ingredientDetailes.sort { $0.vitaminD > $1.vitaminD }
+            
+        case .vitaminE:
+            ingredientDetailes.sort { $0.vitaminE > $1.vitaminE }
+        }
+        
+        foodListView.ingredientDetailes = ingredientDetailes
     }
 }

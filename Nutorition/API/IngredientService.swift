@@ -54,7 +54,7 @@ struct IngredientService {
         }
     }
     
-    static func fetchIngredient(completion: @escaping([IngredientDetaile]) -> Void) {
+    static func fetchIngredients(completion: @escaping([IngredientDetaile]) -> Void) {
         COLLECTION_INGREDIENTS.getDocuments { snapshot, _ in
             guard let documents = snapshot?.documents else { return }
             var foodIdCount = 0
@@ -96,6 +96,15 @@ struct IngredientService {
                 }
                 ingredientCount += 1
             }
+        }
+    }
+    
+    static func fetchIngredient(ingredientID: String, completion: @escaping(Ingredient) -> Void) {
+        COLLECTION_INGREDIENTS.document(ingredientID).getDocument { snapshot, _ in
+            guard let data = snapshot?.data() else { return }
+            
+            let ingredient = Ingredient(data: data)
+            completion(ingredient)
         }
     }
 }

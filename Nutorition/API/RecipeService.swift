@@ -43,8 +43,29 @@ struct RecipeService {
             guard let documents = snapshot?.documents else { return }
             
             let recipes = documents.map { Recipe(data: $0.data()) }
-            print("###recipes:\(recipes.first?.foodIds)")
             completion(recipes)
+        }
+    }
+    
+    static func fetchRecipe(recipe: Recipe, completion: @escaping(RecipeDetaile) -> Void) {
+        let ingredientID = recipe.ingredientID
+        let spiceID = recipe.spiceID
+        let stepID = recipe.stepID
+        
+        IngredientService.fetchIngredient(ingredientID: ingredientID) { ingredient in
+            SpiceService.fetchSpice(spiceID: spiceID) { spice in
+                StepService.fetchStep(stepID: stepID) { step in
+                    
+                    let data: [String: Any] = ["mainImageUrl": recipe.mainImageUrl,
+                                               "title": recipe.title,
+                                               "ingredient": ingredient,
+                                               "spice": spice,
+                                               "step": step]
+                    
+                    let recipeDetaile = RecipeDetaile(data: data)
+                    completion(recipeDetaile)
+                }
+            }
         }
     }
 }

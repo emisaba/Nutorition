@@ -1,8 +1,14 @@
 import UIKit
 
+protocol CategoryViewDelegate {
+    func didSelectCategory(category: Category)
+}
+
 class CategoryView: UIView {
     
     // MARK: - Properties
+    
+    public var delegate: CategoryViewDelegate?
     
     private let identifier = "identifier"
     
@@ -20,14 +26,14 @@ class CategoryView: UIView {
         return cv
     }()
     
-    private let categoryTitles: [String] = ["タンパク質",
-                                            "カルシウム",
-                                            "鉄",
-                                            "ビタミンA",
-                                            "ビタミンB",
-                                            "ビタミンC",
-                                            "ビタミンD",
-                                            "ビタミンE"]
+    private let category: [Category] = [.protein,
+                                        .calcium,
+                                        .iron,
+                                        .vitaminA,
+                                        .vitaminB,
+                                        .vitaminC,
+                                        .vitaminD,
+                                        .vitaminE]
     
     // MARK: - Lifecycle
     
@@ -47,12 +53,12 @@ class CategoryView: UIView {
 
 extension CategoryView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return categoryTitles.count
+        return category.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! TopCategoryViewCell
-        cell.categoryTitle = categoryTitles[indexPath.row]
+        cell.categoryTitle = category[indexPath.row].title
         return cell
     }
 }
@@ -60,7 +66,9 @@ extension CategoryView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 
 extension CategoryView: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        delegate?.didSelectCategory(category: category[indexPath.row])
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout

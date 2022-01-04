@@ -29,11 +29,16 @@ class RecipeDetaileViewController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
+        fetchRecipe()
     }
     
     // MARK: - API
     
-    
+    func fetchRecipe() {
+        RecipeService.fetchRecipe(recipe: recipe) { recipeDetaile in
+            self.ingredientView.recipeDetaile = recipeDetaile
+        }
+    }
     
     // MARK: - Helper
     
@@ -45,14 +50,14 @@ class RecipeDetaileViewController: UIViewController {
                          left: view.leftAnchor,
                          right: view.rightAnchor,
                          paddingLeft: 10,
-                         paddingBottom: 10,
+                         paddingRight: 10,
                          height: 200)
         
         view.addSubview(titleTextFeild)
         titleTextFeild.anchor(top: imageView.bottomAnchor,
                               left: view.leftAnchor,
                               right: view.rightAnchor,
-                              paddingTop: 10,
+                              paddingTop: 20,
                               height: 20)
         
         view.addSubview(ingredientView)

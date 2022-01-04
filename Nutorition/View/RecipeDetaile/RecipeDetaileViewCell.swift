@@ -6,24 +6,15 @@ class RecipeDetaileViewCell: UITableViewCell {
     // MARK: - Properties
     
     public var viewModel: RecipeDetaileViewModel? {
-        didSet {
-            guard let viewModel = viewModel else { return }
-            
-            switch viewModel.recipeDetaileType {
-            case .ingredient:
-                configureIngredientUI()
-            case .spice:
-                configureSpiceUI()
-            case .step:
-                configureStepUI()
-            }
-        }
+        didSet { configureUI() }
     }
     
     private let ingredientImageView = UIImageView.createImageView(image: #imageLiteral(resourceName: "fruit"), cornerRadius: 25)
+    private let ingredientNameLabel = UITextField()
+    private let ingredientAmountLabel = UITextField()
     
-    private let nameLabel = UITextField()
-    private let amountLabel = UITextField()
+    private let spiceNameLabel = UITextField()
+    private let spiceAmountLabel = UITextField()
     
     private let stepNumber  = UILabel.createLabel(text: "", size: 14)
     private let descriptionTextView = UITextView.createTextView(text: "", size: 18, interraction: false)
@@ -40,7 +31,7 @@ class RecipeDetaileViewCell: UITableViewCell {
     
     // MARK: - Helpers
     
-    func configureIngredientUI() {
+    func configureUI() {
         guard let viewModel = viewModel else { return }
         
         addSubview(ingredientImageView)
@@ -50,46 +41,44 @@ class RecipeDetaileViewCell: UITableViewCell {
         ingredientImageView.centerY(inView: self)
         
         ingredientImageView.sd_setImage(with: viewModel.ingredientImageUrl, completed: nil)
+        ingredientImageView.isHidden = viewModel.shouldHideIngredientImage
         
-        addSubview(nameLabel)
-        nameLabel.anchor(left: ingredientImageView.rightAnchor,
+        addSubview(ingredientNameLabel)
+        ingredientNameLabel.anchor(left: ingredientImageView.rightAnchor,
                          paddingLeft: 10)
-        nameLabel.centerY(inView: self)
+        ingredientNameLabel.centerY(inView: self)
         
-        nameLabel.text = viewModel.ingredientName
+        ingredientNameLabel.text = viewModel.ingredientName
+        ingredientNameLabel.isHidden = viewModel.shouldHideIngredientName
         
-        addSubview(amountLabel)
-        amountLabel.anchor(right: rightAnchor, paddingRight: 10)
-        amountLabel.centerY(inView: self)
+        addSubview(ingredientAmountLabel)
+        ingredientAmountLabel.anchor(right: rightAnchor, paddingRight: 10)
+        ingredientAmountLabel.centerY(inView: self)
         
-        amountLabel.text = viewModel.ingredientAmount
-    }
-    
-    func configureSpiceUI() {
-        guard let viewModel = viewModel else { return }
+        ingredientAmountLabel.text = viewModel.ingredientAmount
+        ingredientAmountLabel.isHidden = viewModel.shouldHideIngredientAmount
         
-        addSubview(nameLabel)
-        nameLabel.anchor(left: ingredientImageView.rightAnchor,
+        addSubview(spiceNameLabel)
+        spiceNameLabel.anchor(left: leftAnchor,
                          paddingLeft: 10)
-        nameLabel.centerY(inView: self)
+        spiceNameLabel.centerY(inView: self)
         
-        nameLabel.text = viewModel.spiceName
+        spiceNameLabel.text = viewModel.spiceName
+        spiceNameLabel.isHidden = viewModel.shouldHideSpiceName
         
-        addSubview(amountLabel)
-        amountLabel.anchor(right: rightAnchor, paddingRight: 10)
-        amountLabel.centerY(inView: self)
+        addSubview(spiceAmountLabel)
+        spiceAmountLabel.anchor(right: rightAnchor, paddingRight: 10)
+        spiceAmountLabel.centerY(inView: self)
         
-        amountLabel.text = viewModel.spiceAmount
-    }
-    
-    func configureStepUI() {
-        guard let viewModel = viewModel else { return }
+        spiceAmountLabel.text = viewModel.spiceAmount
+        spiceAmountLabel.isHidden = viewModel.shouldHideSpiceAmount
         
         addSubview(stepNumber)
         stepNumber.anchor(left: leftAnchor, paddingLeft: 10)
         stepNumber.centerY(inView: self)
         
         stepNumber.text = viewModel.stepNumber
+        stepNumber.isHidden = viewModel.shouldHideStepNumber
         
         addSubview(descriptionTextView)
         descriptionTextView.anchor(top: topAnchor,
@@ -101,6 +90,7 @@ class RecipeDetaileViewCell: UITableViewCell {
                                    paddingBottom: 10,
                                    paddingRight: 10)
         
-        stepNumber.text = viewModel.stepDescription
+        descriptionTextView.text = viewModel.stepDescription
+        descriptionTextView.isHidden = viewModel.shouldHideStepDescription
     }
 }

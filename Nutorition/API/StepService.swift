@@ -28,4 +28,13 @@ struct StepService {
             completion(stepID)
         }
     }
+    
+    static func fetchStep(stepID: String, completion: @escaping(Step) -> Void) {
+        COLLECTION_STEPS.document(stepID).getDocument { snapshot, _ in
+            guard let data = snapshot?.data() else { return }
+            
+            let step = Step(data: data)
+            completion(step)
+        }
+    }
 }

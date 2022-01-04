@@ -86,8 +86,6 @@ extension FoodListView: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (frame.width - 40) / 3
-        let height = width + 60
-        return CGSize(width: width, height: height)
+        return CGSize(width: frame.width, height: 80)
     }
 }

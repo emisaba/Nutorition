@@ -16,7 +16,9 @@ class RecipeDetaileView: UIView {
         return tv
     }()
     
-    public var recipeDetaile: RecipeDetaile?
+    public var recipeDetaile: RecipeDetaile? {
+        didSet { tableView.reloadData() }
+    }
     
     // MARK: - Lifecycle
     
@@ -65,11 +67,11 @@ extension RecipeDetaileView: UITableViewDataSource {
         
         switch recipeDetaileType  {
         case .ingredient:
-            return recipeDetaile?.ingredient?.count ?? 0
+            return recipeDetaile?.ingredient?.names.count ?? 0
         case .spice:
-            return recipeDetaile?.spice?.count ?? 0
+            return recipeDetaile?.spice?.names.count ?? 0
         case .step:
-            return recipeDetaile?.step?.count ?? 0
+            return recipeDetaile?.step?.numbers.count ?? 0
         }
     }
     
@@ -80,8 +82,8 @@ extension RecipeDetaileView: UITableViewDataSource {
         guard let recipeDetaile = recipeDetaile else { return cell }
         
         cell.viewModel = RecipeDetaileViewModel(recipeDetaile: recipeDetaile,
-                                                             indexPath: indexPath,
-                                                             recipeDetaileType: recipeDetaileType)
+                                                indexPath: indexPath,
+                                                recipeDetaileType: recipeDetaileType)
         return cell
     }
 }

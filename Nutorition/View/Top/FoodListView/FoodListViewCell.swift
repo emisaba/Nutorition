@@ -12,8 +12,9 @@ class FoodListViewCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
-        iv.layer.cornerRadius = frame.height / 2
+        iv.layer.cornerRadius = 30
         iv.backgroundColor = .systemGray
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -29,20 +30,19 @@ class FoodListViewCell: UICollectionViewCell {
         backgroundColor = .systemBlue
         
         addSubview(imageView)
-        imageView.anchor(top: topAnchor)
-        imageView.setDimensions(height: frame.width, width: frame.width)
+        imageView.anchor(left: leftAnchor, paddingLeft: 10)
+        imageView.setDimensions(height: 60, width: 60)
+        imageView.centerY(inView: self)
         
         addSubview(nameLabel)
         nameLabel.numberOfLines = 0
-        nameLabel.anchor(top: imageView.bottomAnchor,
-                         left: leftAnchor,
-                         right: rightAnchor)
+        nameLabel.anchor(left: imageView.rightAnchor, paddingLeft: 10)
+        nameLabel.centerY(inView: self)
         
         addSubview(amountLabel)
         amountLabel.textAlignment = .center
-        amountLabel.anchor(top: nameLabel.bottomAnchor,
-                           left: leftAnchor,
-                           right: rightAnchor)
+        amountLabel.anchor(right: rightAnchor, paddingRight: 10)
+        amountLabel.centerY(inView: self)
     }
     
     required init?(coder: NSCoder) {
@@ -57,7 +57,6 @@ class FoodListViewCell: UICollectionViewCell {
         imageView.sd_setImage(with: viewModel.imageUrl, completed: nil)
         nameLabel.text = viewModel.name
         amountLabel.text = viewModel.amontt
-        
     }
     
     func didSelectUI() {
