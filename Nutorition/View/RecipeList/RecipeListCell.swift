@@ -61,8 +61,20 @@ struct RecipeListCellViewModel {
         return recipe.title
     }
     
-    var amountData: [String: Double] {
-        return recipe.foodSum
+    var amountData: AmountDataSum {
+        let protein = Double(recipe.foodSum["protein"] ?? 0)
+        let calcium =  Double(recipe.foodSum["calcium"] ?? 0)
+        let iron =  Double(recipe.foodSum["iron"] ?? 0)
+        let vitaminA =  Double(recipe.foodSum["vitaminA"] ?? 0)
+        let vitaminB =  Double(recipe.foodSum["vitaminB"] ?? 0)
+        let vitaminC =  Double(recipe.foodSum["vitaminC"] ?? 0)
+        let vitaminD =  Double(recipe.foodSum["vitaminD"] ?? 0)
+        let vitaminE =  Double(recipe.foodSum["vitaminE"] ?? 0)
+        
+        return AmountDataSum(protein: protein, calcium: calcium,
+                             iron: iron, vitaminA: vitaminA,
+                             vitaminB: vitaminB, vitaminC: vitaminC,
+                             vitaminD: vitaminD, vitaminE: vitaminE)
     }
 
     init(recipe: Recipe) {

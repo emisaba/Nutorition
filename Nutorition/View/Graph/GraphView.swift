@@ -18,7 +18,7 @@ class GraphView: UIView {
     private let idealVitamindAmount: CGFloat = 8.5
     private let idealVitamineAmount: CGFloat = 5
     
-    var amountData: [String: Double] = [:] {
+    var amountData: AmountDataSum? {
         didSet {
             drawGraphByUsingFoodData()
             setNeedsDisplay()
@@ -169,15 +169,16 @@ class GraphView: UIView {
     }
     
     func drawGraphByUsingFoodData() {
+        guard let amountData = amountData else { return }
         
-        let protein = CGFloat(amountData["protein"] ?? 0)
-        let calcium = CGFloat(amountData["calcium"] ?? 0)
-        let iron = CGFloat(amountData["iron"] ?? 0)
-        let vitaminA = CGFloat(amountData["vitaminA"] ?? 0)
-        let vitaminB = CGFloat(amountData["vitaminB"] ?? 0)
-        let vitaminC = CGFloat(amountData["vitaminC"] ?? 0)
-        let vitaminD = CGFloat(amountData["vitaminD"] ?? 0)
-        let vitaminE = CGFloat(amountData["vitaminE"] ?? 0)
+        let protein = CGFloat(amountData.protein)
+        let calcium = CGFloat(amountData.calcium)
+        let iron = CGFloat(amountData.iron)
+        let vitaminA = CGFloat(amountData.vitaminA)
+        let vitaminB = CGFloat(amountData.vitaminB)
+        let vitaminC = CGFloat(amountData.vitaminC)
+        let vitaminD = CGFloat(amountData.vitaminD)
+        let vitaminE = CGFloat(amountData.vitaminE)
         
         let proteineBorderLength = radiusLength * (protein / idealProteinAmount)
         let proteinY = viewCenterPoint.y - proteineBorderLength

@@ -35,6 +35,10 @@ class CategoryView: UIView {
                                         .vitaminD,
                                         .vitaminE]
     
+    public var isBeauty = false {
+        didSet { collectionVIew.reloadData() }
+    }
+    
     // MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -58,7 +62,7 @@ extension CategoryView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! TopCategoryViewCell
-        cell.categoryTitle = category[indexPath.row].title
+        cell.categoryTitle = category[indexPath.row].title(iBeauty: isBeauty)
         return cell
     }
 }

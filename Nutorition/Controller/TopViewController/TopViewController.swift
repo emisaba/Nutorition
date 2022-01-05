@@ -12,6 +12,10 @@ class TopViewController: UIViewController {
                                                          width: view.frame.width,
                                                          height: view.frame.height / 2 - 40), isTop: true)
     
+    private lazy var effectButton = UIButton.createImageButton(image: #imageLiteral(resourceName: "fruit"), cornerRadius: 0,
+                                                          isUserInteraction: true, target: self,
+                                                          selector: #selector(didTapEffectButton))
+    
     private let categoryView = CategoryView()
     private let foodListView = FoodListView()
     private lazy var bottomButton = createBottomButton()
@@ -20,6 +24,8 @@ class TopViewController: UIViewController {
     
     private var selectedIngredients: [IngredientDetaile] = []
     public var ingredientDetailes: [IngredientDetaile] = []
+    
+    private var amountDataSum = AmountDataSum(protein: 0, calcium: 0, iron: 0, vitaminA: 0, vitaminB: 0, vitaminC: 0, vitaminD: 0, vitaminE: 0)
     
     // MARK: - Lifecycle
     
@@ -45,6 +51,12 @@ class TopViewController: UIViewController {
         }
     }
     
+    // MARK: - Action
+    
+    @objc func didTapEffectButton() {
+        categoryView.isBeauty.toggle()
+    }
+    
     // MARK: - Actions
     
     @objc func didTapLookButton() {
@@ -68,7 +80,11 @@ class TopViewController: UIViewController {
     func configureUI() {
         
         self.view.addSubview(graphView)
-        graphView.amountData = userDefaults.amountValue()
+        
+        view.addSubview(effectButton)
+        effectButton.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                            right: view.rightAnchor,
+                            paddingTop: 10, paddingRight: 30)
         
         view.addSubview(categoryView)
         categoryView.delegate = self
@@ -133,7 +149,7 @@ class TopViewController: UIViewController {
         return baseView
     }
     
-    func stringToDouble(ingredientDetaile: IngredientDetaile, didSelect: Bool) -> [String: Double]? {
+    func stringToDouble(ingredientDetaile: IngredientDetaile, didSelect: Bool) -> AmountDataSum? {
         guard let protein = Double(ingredientDetaile.protein) else { return nil }
         guard let calcium = Double(ingredientDetaile.calcium) else { return nil }
         guard let iron = Double(ingredientDetaile.iron) else { return nil }
@@ -143,16 +159,39 @@ class TopViewController: UIViewController {
         guard let vitaminD = Double(ingredientDetaile.vitaminD) else { return nil }
         guard let vitaminE = Double(ingredientDetaile.vitaminE) else { return nil }
         
-        let amountData: [String: Double] = ["protein": didSelect ? protein : -protein,
-                                            "calcium": didSelect ? calcium : -calcium,
-                                            "iron": didSelect ? iron : -iron,
-                                            "vitaminA": didSelect ? vitaminA : -vitaminA,
-                                            "vitaminB": didSelect ? vitaminB : -vitaminB,
-                                            "vitaminC": didSelect ? vitaminC : -vitaminC,
-                                            "vitaminD": didSelect ? vitaminD : -vitaminD,
-                                            "vitaminE": didSelect ? vitaminE : -vitaminE]
+        let properProtein = didSelect ? protein : -protein
+        let properCalcium = didSelect ? calcium : -calcium
+        let properIron = didSelect ? iron : -iron
+        let properVitaminA = didSelect ? vitaminA : -vitaminA
+        let properVitaminB = didSelect ? vitaminB : -vitaminB
+        let properVitaminC = didSelect ? vitaminC : -vitaminC
+        let properVitaminD = didSelect ? vitaminD : -vitaminD
+        let properVitaminE = didSelect ? vitaminE : -vitaminE
+        
+        let amountData = AmountDataSum(protein: properProtein,
+                                       calcium: properCalcium,
+                                       iron: properIron,
+                                       vitaminA: properVitaminA,
+                                       vitaminB: properVitaminB,
+                                       vitaminC: properVitaminC,
+                                       vitaminD: properVitaminD,
+                                       vitaminE: properVitaminE)
         
         return amountData
+    }
+    
+    func amountDataSum(amountData: AmountDataSum) {
+        
+        amountDataSum.protein += amountData.protein
+        amountDataSum.calcium += amountData.calcium
+        amountDataSum.iron += amountData.iron
+        amountDataSum.vitaminA += amountData.vitaminA
+        amountDataSum.vitaminB += amountData.vitaminB
+        amountDataSum.vitaminC += amountData.vitaminC
+        amountDataSum.vitaminD += amountData.vitaminD
+        amountDataSum.vitaminE += amountData.vitaminE
+        
+        graphView.amountData = amountDataSum
     }
 }
 
@@ -161,14 +200,14 @@ class TopViewController: UIViewController {
 extension TopViewController: FoodListViewDelegate {
     func didSelect(ingredientDetaile: IngredientDetaile) {
         guard let amountData = stringToDouble(ingredientDetaile: ingredientDetaile, didSelect: true) else { return }
-        graphView.amountData = amountData
+        amountDataSum(amountData: amountData)
         
         selectedIngredients.append(ingredientDetaile)
     }
     
     func didDeselect(ingredientDetaile: IngredientDetaile) {
         guard let amountData = stringToDouble(ingredientDetaile: ingredientDetaile, didSelect: false) else { return }
-        graphView.amountData = amountData
+        amountDataSum(amountData: amountData)
         
         selectedIngredients.removeAll(where: { $0.ingredientID == ingredientDetaile.ingredientID } )
     }

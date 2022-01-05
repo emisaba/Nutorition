@@ -10,25 +10,25 @@ enum Category {
     case vitaminD
     case vitaminE
     
-    var title: String {
+    func title(iBeauty: Bool) -> String {
         
         switch self {
         case .protein:
-            return "タンパク質"
+            return iBeauty ? "ハリ・弾力" : "タンパク質"
         case .calcium:
-            return "カルシウム"
+            return iBeauty ? "潤い" : "カルシウム"
         case .iron:
-            return "鉄"
+            return iBeauty ? "血色" : "鉄"
         case .vitaminA:
-            return "ビタミンA"
+            return iBeauty ? "シワ" : "ビタミンA"
         case .vitaminB:
-            return "ビタミンB"
+            return iBeauty ? "ニキビ" : "ビタミンB"
         case .vitaminC:
-            return "ビタミンC"
+            return iBeauty ? "ツヤ" : "ビタミンC"
         case .vitaminD:
-            return "ビタミンD"
+            return iBeauty ? "たるみ" : "ビタミンD"
         case .vitaminE:
-            return "ビタミンE"
+            return iBeauty ? "アンチエイジング" : "ビタミンE"
         }
     }
 }

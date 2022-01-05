@@ -1,16 +1,5 @@
 import UIKit
 
-struct AmountDataSum {
-    let protein: Double
-    let calcium: Double
-    let iron: Double
-    let vitaminA: Double
-    let vitaminB: Double
-    let vitaminC: Double
-    let vitaminD: Double
-    let vitaminE: Double
-}
-
 // MARK: - RecipeCreateViewDelegate
 
 extension RecipeCreateViewController: RecipeCreateViewDelegate {
@@ -72,21 +61,19 @@ extension RecipeCreateViewController: RecipeCreateViewDelegate {
         let newCalcium = foodSum.calcium + NewFoodData.protein
         let newIron = foodSum.iron + NewFoodData.iron
         let newVitaminA = foodSum.vitaminA + NewFoodData.vitaminA
-        let newVitaminD = foodSum.vitaminB + NewFoodData.vitaminB
-        let newVitaminE = foodSum.vitaminC + NewFoodData.vitaminC
-        let newVitaminB = foodSum.vitaminD + NewFoodData.vitaminD
-        let newVitaminC = foodSum.vitaminE + NewFoodData.vitaminE
+        let newVitaminB = foodSum.vitaminB + NewFoodData.vitaminB
+        let newVitaminC = foodSum.vitaminC + NewFoodData.vitaminC
+        let newVitaminD = foodSum.vitaminD + NewFoodData.vitaminD
+        let newVitaminE = foodSum.vitaminE + NewFoodData.vitaminE
         
-        let amountData = ["protein": newprotein,
-                          "calcium": newCalcium,
-                          "iron": newIron,
-                          "vitaminA": newVitaminA,
-                          "vitaminB": newVitaminB,
-                          "vitaminC": newVitaminC,
-                          "vitaminD": newVitaminD,
-                          "vitaminE": newVitaminE]
-        
-        recipeCreateView.graphView.amountData = amountData
+        recipeCreateView.graphView.amountData = AmountDataSum(protein: newprotein,
+                                                              calcium: newCalcium,
+                                                              iron: newIron,
+                                                              vitaminA: newVitaminA,
+                                                              vitaminB: newVitaminB,
+                                                              vitaminC: newVitaminC,
+                                                              vitaminD: newVitaminD,
+                                                              vitaminE: newVitaminE)
         recipeCreateView.graphView.layoutIfNeeded()
         
         self.foodSum = AmountDataSum(protein: newprotein,
